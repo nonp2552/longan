@@ -4,9 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Data Submission Form</title>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 </head>
 <body>
   <h1>Data Submission Form</h1>
+   <div id="userProfile"></div>
   <form id="dataForm">
     <label for="data1">Data 1:</label>
     <input type="text" id="data1" name="data1" required><br><br>
@@ -16,7 +18,43 @@
     <input type="text" id="data3" name="data3" required><br><br>
     <button type="submit">Submit</button>
   </form>
+<script>
+    window.onload = function() {
+      initializeLiff();
+    };
 
+    async function initializeLiff() {
+      try {
+        await liff.init({ liffId: 'YOUR_LIFF_ID' });
+        if (liff.isLoggedIn()) {
+          getUserProfile();
+        } else {
+          liff.login();
+        }
+      } catch (error) {
+        console.error('LIFF initialization failed', error);
+      }
+    }
+
+    async function getUserProfile() {
+      try {
+        const profile = await liff.getProfile();
+        const userProfileElement = document.getElementById('userProfile');
+        userProfileElement.innerHTML = `
+          <h2>Profile</h2>
+          <p><strong>UserID:</strong> ${profile.userId}</p>
+          <p><strong>DisplayName:</strong> ${profile.displayName}</p>
+          <p><strong>StatusMessage:</strong> ${profile.statusMessage}</p>
+          <img src="${profile.pictureUrl}" alt="Profile Picture">
+        `;
+        // Call a function to save user profile to Google Sheets
+        saveUserProfileToGoogleSheet(profile);
+      } catch (error) {
+        console.error('Error getting user profile', error);
+      }
+    }
+
+  </script>
   <!-- Script to handle form submission -->
   <script>
     document.getElementById('dataForm').addEventListener('submit', function(event) {
