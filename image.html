@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Line OA Data Collection</title>
+  <!-- Add LINE Front-end Framework (LIFF) SDK -->
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+  <h1>Line OA Data Collection</h1>
+  <div id="userProfile"></div>
+  <input type="file" accept="image/*" id="imageInput">
+  <button onclick="uploadImage()">Upload Image</button>
+
+  <!-- Cloudinary Upload Widget -->
+  <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    // Cloudinary Widget Configuration
+    var cloudinaryWidget = cloudinary.createUploadWidget({
+      cloudName: 'YOUR_CLOUD_NAME',
+      uploadPreset: 'YOUR_UPLOAD_PRESET'
+    }, (error, result) => { 
+      if (!error && result && result.event === "success") { 
+        console.log('Image uploaded successfully!', result.info.secure_url);
+        // Call a function to save the image URL to Google Sheets
+        saveImageToGoogleSheet(result.info.secure_url);
+      }
+    });
+
+    // Function to open Cloudinary upload widget
+    function uploadImage() {
+      cloudinaryWidget.open();
+    }
+  </script>
+
+  <!-- Google Sheets API -->
+  <script>
+    // Function to save image URL to Google Sheets
+    function saveImageToGoogleSheet(imageUrl) {
+      // User profile data
+      const profileData = {
+        userId: document.getElementById('userId').innerText,
+        displayName: document.getElementById('displayName').innerText,
+        statusMessage: document.getElementById('statusMessage').innerText,
+      };
+
+      // Data object to be sent
+      const data = {
+        imageUrl: imageUrl,
+        userProfile: profileData,
+      };
+
+      // Fetch API POST request to Google Apps Script
+      fetch('YOUR_GOOGLE_APPS_SCRIPT_URL', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        console.log('Data sent to Google Apps Script successfully.');
+      })
+      .catch(error => {
+        console.error('Error sending data to Google Apps Script:', error);
+      });
+    }
+  </script>
+
+  <!-- Initialize LIFF -->
+  <script>
+    window.onload = function() {
+      initializeLiff();
+    };
+
+    async function initializeLiff() {
+      try {
+        await liff.init({ liffId: 'YOUR_LIFF_ID' });
+        if (liff.isLoggedIn()) {
+          getUserProfile();
+        } else {
+          liff.login();
+        }
+      } catch (error) {
+        console.error('LIFF initialization failed', error);
+      }
+    }
+
+    async function getUserProfile() {
+      try {
+        const profile = await liff.getProfile();
+        const userProfileElement = document.getElementById('userProfile');
+        userProfileElement.innerHTML = `
+          <h2>Profile</h2>
+          <p><strong>UserID:</strong> <span id="userId">${profile.userId}</span></p>
+          <p><strong>DisplayName:</strong> <span id="displayName">${profile.displayName}</span></p>
+          <p><strong>StatusMessage:</strong> <span id="statusMessage">${profile.statusMessage}</span></p>
+          <img src="${profile.pictureUrl}" alt="Profile Picture">
+        `;
+        // Call a function to save user profile to Google Sheets
+        saveUserProfileToGoogleSheet(profile);
+      } catch (error) {
+        console.error('Error getting user profile', error);
+      }
+    }
+
+    function saveUserProfileToGoogleSheet(profile) {
+      // Implement Google Sheets API integration here to save user profile
+    }
+  </script>
+</body>
+</html>
