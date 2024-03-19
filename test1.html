@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Line OA Data Collection</title>
+  <!-- Add LINE Front-end Framework (LIFF) SDK -->
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+  <h1>Line OA Data Collection</h1>
+  <div id="userProfile"></div>
+  <div>
+    <label for="data1">Data 1:</label>
+    <input type="text" id="data1">
+  </div>
+  <div>
+    <label for="data2">Data 2:</label>
+    <input type="text" id="data2">
+  </div>
+  <div>
+    <label for="data3">Data 3:</label>
+    <input type="text" id="data3">
+  </div>
+  <button onclick="submitData()">Submit</button>
+
+  <!-- Google Sheets API -->
+  <script>
+    // Initialize LIFF
+    window.onload = function() {
+      initializeLiff();
+    };
+
+    async function initializeLiff() {
+      try {
+        await liff.init({ liffId: '2004099826-lyMvoaL9' });
+        if (liff.isLoggedIn()) {
+          getUserProfile();
+        } else {
+          liff.login();
+        }
+      } catch (error) {
+        console.error('LIFF initialization failed', error);
+      }
+    }
+
+    // Get user profile
+    async function getUserProfile() {
+      try {
+        const profile = await liff.getProfile();
+        const userProfileElement = document.getElementById('userProfile');
+        userProfileElement.innerHTML = `
+          <h2>Profile</h2>
+          <p><strong>UserID:</strong> ${profile.userId}</p>
+          <p><strong>DisplayName:</strong> ${profile.displayName}</p>
+          <p><strong>StatusMessage:</strong> ${profile.statusMessage}</p>
+          <img src="${profile.pictureUrl}" alt="Profile Picture">
+        `;
+      } catch (error) {
+        console.error('Error getting user profile', error);
+      }
+    }
+
+    // Submit data
+    function submitData() {
+      const data1 = document.getElementById('data1').value;
+      const data2 = document.getElementById('data2').value;
+      const data3 = document.getElementById('data3').value;
+
+      // Data object to be sent
+      const data = {
+        data1: data1,
+        data2: data2,
+        data3: data3,
+      };
+
+      // Fetch API POST request to Google Apps Script
+      fetch('https://script.google.com/macros/s/AKfycbwQtCgJCdPrbAhMAcoDPuNSbpmah1eDLc76fQD-JqSdKgdJZQxeEWYRIrMcAfyefFqzUg/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        console.log('Data sent to Google Apps Script successfully.');
+      })
+      .catch(error => {
+        console.error('Error sending data to Google Apps Script:', error);
+      });
+    }
+  </script>
+</body>
+</html>
