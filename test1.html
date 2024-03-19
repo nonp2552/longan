@@ -3,143 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Line OA Data Collection</title>
-  <style>
-    /* Popup box style */
-    .popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #fff;
-      border: 2px solid #ccc;
-      border-radius: 5px;
-      padding: 20px;
-      z-index: 9999;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    /* Overlay style */
-    .overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 9998;
-    }
-  </style>
+  <title>Data Submission Form</title>
 </head>
 <body>
-  <h1>Line OA Data Collection</h1>
-  <div id="userProfile"></div>
-  <div>
+  <h1>Data Submission Form</h1>
+  <form id="dataForm">
     <label for="data1">Data 1:</label>
-    <input type="text" id="data1">
-  </div>
-  <div>
+    <input type="text" id="data1" name="data1" required><br><br>
     <label for="data2">Data 2:</label>
-    <input type="text" id="data2">
-  </div>
-  <div>
+    <input type="text" id="data2" name="data2" required><br><br>
     <label for="data3">Data 3:</label>
-    <input type="text" id="data3">
-  </div>
-  <button onclick="submitData()">Submit</button>
+    <input type="text" id="data3" name="data3" required><br><br>
+    <button type="submit">Submit</button>
+  </form>
 
-  <!-- Popup box HTML -->
-  <div id="popup" class="popup">
-    <h2>Success!</h2>
-    <p>Your data has been submitted successfully.</p>
-    <button onclick="closePopup()">Close</button>
-  </div>
-
-  <!-- Overlay HTML -->
-  <div id="overlay" class="overlay"></div>
-
-  <!-- Google Sheets API -->
+  <!-- Script to handle form submission -->
   <script>
-    // Initialize LIFF
-    window.onload = function() {
-      initializeLiff();
-    };
+    document.getElementById('dataForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form submission from reloading the page
 
-    async function initializeLiff() {
-      try {
-        await liff.init({ liffId: '2004099826-lyMvoaL9' });
-        if (liff.isLoggedIn()) {
-          getUserProfile();
-        } else {
-          liff.login();
-        }
-      } catch (error) {
-        console.error('LIFF initialization failed', error);
-      }
-    }
+      // Collect form data
+      const formData = new FormData(event.target);
 
-    // Get user profile
-    async function getUserProfile() {
-      try {
-        const profile = await liff.getProfile();
-        const userProfileElement = document.getElementById('userProfile');
-        userProfileElement.innerHTML = `
-          <h2>Profile</h2>
-          <p><strong>UserID:</strong> ${profile.userId}</p>
-          <p><strong>DisplayName:</strong> ${profile.displayName}</p>
-          <p><strong>StatusMessage:</strong> ${profile.statusMessage}</p>
-          <img src="${profile.pictureUrl}" alt="Profile Picture">
-        `;
-      } catch (error) {
-        console.error('Error getting user profile', error);
-      }
-    }
+      // Convert form data to JSON
+      const jsonData = {};
+      formData.forEach(function(value, key) {
+        jsonData[key] = value;
+      });
 
-    // Submit data
-    function submitData() {
-      const data1 = document.getElementById('data1').value;
-      const data2 = document.getElementById('data2').value;
-      const data3 = document.getElementById('data3').value;
-
-      // Data object to be sent
-      const data = {
-        data1: data1,
-        data2: data2,
-        data3: data3,
-      };
-
-      // Fetch API POST request to Google Apps Script
-      fetch('https://script.google.com/macros/s/AKfycbyNrPjoLY2vNq4G1IVP5W0kDstNGfxFWU_IEFCpMHmDQzkllKaJOf6M1HBk2iwiqr-VTg/exec', {
+      // Send data to Google Apps Script API
+      fetch('https://script.google.com/macros/s/your_script_id/exec', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(jsonData)
       })
       .then(response => {
-        console.log('Data sent to Google Apps Script successfully.');
-        // Show success popup
-        showPopup();
+        if (response.ok) {
+          alert('Data submitted successfully!');
+          // Clear form fields
+          document.getElementById('dataForm').reset();
+        } else {
+          alert('Failed to submit data. Please try again.');
+        }
       })
       .catch(error => {
-        console.error('Error sending data to Google Apps Script:', error);
-        // Show error message to user
-        alert('Error submitting data. Please try again later.');
+        console.error('Error submitting data:', error);
+        alert('Failed to submit data. Please try again later.');
       });
-    }
-
-    // Show popup
-    function showPopup() {
-      document.getElementById('popup').style.display = 'block';
-      document.getElementById('overlay').style.display = 'block';
-    }
-
-    // Close popup
-    function closePopup() {
-      document.getElementById('popup').style.display = 'none';
-      document.getElementById('overlay').style.display = 'none';
-    }
+    });
   </script>
 </body>
 </html>
