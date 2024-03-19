@@ -4,8 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Line OA Data Collection</title>
-  <!-- Add LINE Front-end Framework (LIFF) SDK -->
-  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <style>
+    /* Popup box style */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      z-index: 9999;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    /* Overlay style */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 9998;
+    }
+  </style>
 </head>
 <body>
   <h1>Line OA Data Collection</h1>
@@ -23,6 +48,16 @@
     <input type="text" id="data3">
   </div>
   <button onclick="submitData()">Submit</button>
+
+  <!-- Popup box HTML -->
+  <div id="popup" class="popup">
+    <h2>Success!</h2>
+    <p>Your data has been submitted successfully.</p>
+    <button onclick="closePopup()">Close</button>
+  </div>
+
+  <!-- Overlay HTML -->
+  <div id="overlay" class="overlay"></div>
 
   <!-- Google Sheets API -->
   <script>
@@ -75,7 +110,7 @@
       };
 
       // Fetch API POST request to Google Apps Script
-      fetch('https://script.google.com/macros/s/AKfycbwQtCgJCdPrbAhMAcoDPuNSbpmah1eDLc76fQD-JqSdKgdJZQxeEWYRIrMcAfyefFqzUg/exec', {
+      fetch('https://script.google.com/macros/s/AKfycbyc38NX_QRUU-mkDHteZbavdmkDC663SEg8NaToIPzPWzLOS5TxkVBdfsERGee8PS67zg/exec', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -84,10 +119,26 @@
       })
       .then(response => {
         console.log('Data sent to Google Apps Script successfully.');
+        // Show success popup
+        showPopup();
       })
       .catch(error => {
         console.error('Error sending data to Google Apps Script:', error);
+        // Show error message to user
+        alert('Error submitting data. Please try again later.');
       });
+    }
+
+    // Show popup
+    function showPopup() {
+      document.getElementById('popup').style.display = 'block';
+      document.getElementById('overlay').style.display = 'block';
+    }
+
+    // Close popup
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
     }
   </script>
 </body>
