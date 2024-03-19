@@ -5,80 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Data Submission Form</title>
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f2f2f2;
-    }
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-    }
-    label {
-      font-weight: bold;
-    }
-    input {
-      padding: 8px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    button {
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    #userProfile {
-      margin-top: 20px;
-    }
-    #userProfile h2 {
-      margin-bottom: 10px;
-    }
-    #userProfile p {
-      margin: 5px 0;
-    }
-    #userProfile img {
-      width: 100px;
-      border-radius: 50%;
-      margin-top: 10px;
-    }
-  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Data Submission Form</h1>
-    <form id="dataForm">
-      <label for="data1">Data 1:</label>
-      <input type="text" id="data1" name="data1" required><br>
-      <label for="data2">Data 2:</label>
-      <input type="text" id="data2" name="data2" required><br>
-      <label for="data3">Data 3:</label>
-      <input type="text" id="data3" name="data3" required><br>
-      <button type="submit">Submit</button>
-    </form>
-    <div id="userProfile"></div>
-  </div>
-  <script>
+  <h1>Data Submission Form</h1>
+   <div id="userProfile"></div>
+  <form id="dataForm">
+    <label for="data1">Data 1:</label>
+    <input type="text" id="data1" name="data1" required><br><br>
+    <label for="data2">Data 2:</label>
+    <input type="text" id="data2" name="data2" required><br><br>
+    <label for="data3">Data 3:</label>
+    <input type="text" id="data3" name="data3" required><br><br>
+    <button type="submit">Submit</button>
+  </form>
+<script>
     window.onload = function() {
       initializeLiff();
     };
