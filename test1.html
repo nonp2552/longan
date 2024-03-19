@@ -11,10 +11,14 @@
       margin: 0;
       padding: 0;
       background-color: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
     .container {
+      width: 80%;
       max-width: 600px;
-      margin: 0 auto;
       padding: 20px;
       background-color: #fff;
       border-radius: 10px;
@@ -49,6 +53,7 @@
       background-color: #0056b3;
     }
     #userProfile {
+      text-align: center;
       margin-top: 20px;
     }
     #userProfile h2 {
@@ -58,13 +63,36 @@
       margin: 5px 0;
     }
     #userProfile img {
-      width: 100px;
+      width: 15%;
       border-radius: 50%;
       margin-top: 10px;
+    }
+    .loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      visibility: hidden;
+    }
+    .loading-overlay.active {
+      visibility: visible;
+    }
+    .loading-text {
+      color: #fff;
+      font-size: 18px;
     }
   </style>
 </head>
 <body>
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-text">Submitting data...</div>
+  </div>
   <div class="container">
     <h1>Data Submission Form</h1>
     <form id="dataForm">
@@ -74,7 +102,7 @@
       <input type="text" id="data2" name="data2" required><br>
       <label for="data3">Data 3:</label>
       <input type="text" id="data3" name="data3" required><br>
-      <button type="submit">Submit</button>
+      <button type="submit" id="submitButton">Submit</button>
     </form>
     <div id="userProfile"></div>
   </div>
@@ -108,16 +136,20 @@
           <img src="${profile.pictureUrl}" alt="Profile Picture">
         `;
         // Call a function to save user profile to Google Sheets
-        
         saveUserProfileToGoogleSheet(profile);
       } catch (error) {
         console.error('Error getting user profile', error);
       }
     }
 
- 
     document.getElementById('dataForm').addEventListener('submit', function(event) {
       event.preventDefault(); // Prevent form submission from reloading the page
+
+      // Disable submit button and show loading overlay
+      const submitButton = document.getElementById('submitButton');
+      submitButton.disabled = true;
+      const loadingOverlay = document.getElementById('loadingOverlay');
+      loadingOverlay.classList.add('active');
 
       // Collect form data
       const data1 = document.getElementById('data1').value;
@@ -141,8 +173,11 @@
       .catch(error => {
         console.error('Error submitting data:', error);
         alert('Failed to submit data. Please try again later.');
+      })
+      .finally(() => {
+        // Enable submit button and hide loading overlay after submission
+        submitButton.disabled = false;
+        loadingOverlay.classList.remove('active');
       });
     });
-  </script>
-</body>
-</html>
+  </script
