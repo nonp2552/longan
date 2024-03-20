@@ -7,7 +7,7 @@
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 </head>
 <body>
-  <h1>บันทึกข้อมูล</h1>
+  <h1>บันทึกข้อมูลการขาย</h1>
    <div id="userProfile"></div>
   <form id="dataForm">
     <label for="data1">Data 1:</label>
@@ -41,9 +41,10 @@
         const profile = await liff.getProfile();
         const userProfileElement = document.getElementById('userProfile');
         userProfileElement.innerHTML = `
-          <h2>ข้อมูลไลน์</h2>
-          <p style="visibility: hidden;"><strong>UserID:</strong> ${profile.userId}</p>
-          <p><strong>คุณ : </strong> ${profile.displayName}</p>
+          <h2>Profile</h2>
+          <p><strong>UserID:</strong> ${profile.userId}</p>
+          <p><strong>DisplayName:</strong> ${profile.displayName}</p>
+          <p><strong>StatusMessage:</strong> ${profile.statusMessage}</p>
           <img src="${profile.pictureUrl}" alt="Profile Picture">
         `;
         // Call a function to save user profile to Google Sheets
@@ -62,7 +63,7 @@
       // Collect form data
       const data1 = document.getElementById('data1').value;
       const data2 = document.getElementById('data2').value;
-      const data3 = profile.userId;
+      const data3 = document.getElementById('data3').value;
 
       // Construct URL with query parameters
       const url = `https://script.google.com/macros/s/AKfycbyFDnc2Y2llP4P8EXvJkUgV7sFV_KBCOFn0lO-mXpdNmREdFAVe6bZt-o8W9LcyISnBow/exec?data1=${data1}&data2=${data2}&data3=${data3}`;
@@ -86,3 +87,4 @@
   </script>
 </body>
 </html>
+
