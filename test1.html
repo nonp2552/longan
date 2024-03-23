@@ -42,10 +42,9 @@
         const userProfileElement = document.getElementById('userProfile');
         userProfileElement.innerHTML = `
           <h2>Profile</h2>
-          <p><strong>UserID:</strong> ${profile.userId}</p>
-          <p><strong>DisplayName:</strong> ${profile.displayName}</p>
-          <p><strong>StatusMessage:</strong> ${profile.statusMessage}</p>
-          <img src="${profile.pictureUrl}" style="width:20%";>
+          <p style="visibility: hidden;"><strong>UserID:</strong> ${profile.userId}</p>
+          <p><strong>คุณ : </strong> ${profile.displayName}</p>
+          <img src="${profile.pictureUrl}" style="width:20%;">
         `;
         // Call a function to save user profile to Google Sheets
         saveUserProfileToGoogleSheet(profile);
