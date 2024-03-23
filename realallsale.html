@@ -52,12 +52,14 @@
         <h3>แบบขายเหมายกสวน</h3>
       
       <form id="dataForm">
-        <label for="data1">วิธีการขายเหมา : </label>
-        <input type="text" id="sale_type" name="sale_type" required><br><br>
-        <label for="data2">ราคาเหมา : </label>
-        <input type="text" id="price" name="price" required><br><br>
-        <label for="data3">จำนวนต้น : </label>
-        <input type="text" id="tree_quantity" name="tree_quantity" required><br><br>
+        <label for="data1">วิธีการขายเหมา : </label> 
+        <select id="sale_type" required>
+            <option value="" disabled selected >กรุณาเลือกจังหวัด</option>
+            <option value="เหมาสวนตกเขียว">เหมาสวนตกเขียว</option>
+            <option value="เหมาสวนลูกโต">เหมาสวนลูกโต</option>
+        </select> <br><br>
+        <label for="data2">ราคาเหมา : </label> <input type="text" id="price" name="price" required><br><br>
+        <label for="data3">จำนวนต้น : </label> <input type="text" id="tree_quantity" name="tree_quantity" required><br><br>
         <button type="submit"> บันทึกข้อมูล </button>
       </form>
       </td>
