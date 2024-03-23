@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Submission Form</title>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+  <table align="center">
+    <tr>
+      <td>
+            <h1>บันทึกข้อมูลการขาย</h1>
+       <div id="userProfile"></div>
+      <form id="dataForm">
+        <label for="data1">Data 1:</label>
+        <input type="text" id="data1" name="data1" required><br><br>
+        <label for="data2">Data 2:</label>
+        <input type="text" id="data2" name="data2" required><br><br>
+        <label for="data3">Data 3:</label>
+        <input type="text" id="data3" name="data3" required><br><br>
+        <button type="submit">Submit</button>
+      </form>
+      </td>
+    </tr>
+  </table>
+  
+<script>
+    window.onload = function() {
+      initializeLiff();
+    };
+
+    async function initializeLiff() {
+      try {
+        await liff.init({ liffId: '2004099826-lyMvoaL9' });
+        if (liff.isLoggedIn()) {
+          getUserProfile();
+        } else {
+          liff.login();
+        }
+      } catch (error) {
+        console.error('LIFF initialization failed', error);
+      }
+    }
+
+    var userId = '';
+    var displayName = '';
+    var pictureURL = '';
+    async function getUserProfile() {
+      try {
+        const profile = await liff.getProfile();
+        const userProfileElement = document.getElementById('userProfile');
+        userProfileElement.innerHTML = `
+          <p style="visibility: hidden;"><strong>UserID:</strong> ${profile.userId}</p>
+          <p><strong>คุณ : </strong> ${profile.displayName}</p>
+          <img src="${profile.pictureUrl}" style="width:20%;">
+        `;
+
+         userId = profile.userId;
+         displayName = profile.displayName;
+         pictureURL = profile.pictureUrl;
+        // Call a function to save user profile to Google Sheets
+       // saveUserProfileToGoogleSheet(profile);
+        
+      } catch (error) {
+        console.error('Error getting user profile', error);
+      }
+    }
+
+  </script>
+  <!-- Script to handle form submission -->
+  <script>
+    document.getElementById('dataForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form submission from reloading the page
+
+      // Collect form data
+      const data1 = document.getElementById('data1').value;
+      const data2 = document.getElementById('data2').value;
+      const data3 = document.getElementById('data3').value;
+
+      // Construct URL with query parameters
+      const url = `https://script.google.com/macros/s/AKfycbyFDnc2Y2llP4P8EXvJkUgV7sFV_KBCOFn0lO-mXpdNmREdFAVe6bZt-o8W9LcyISnBow/exec?data1=${userId}&data2=${data2}&data3=${data3}`;
+
+      // Send data to Google Apps Script API using GET method
+      fetch(url)
+      .then(response => {
+        if (response.ok) {
+          alert('Data submitted successfully!');
+          // Clear form fields
+          document.getElementById('dataForm').reset();
+        } else {
+          alert('Failed to submit data. Please try again.');
+        }
+      })
+      .catch(error => {
+        console.error('Error submitting data:', error);
+        alert('Failed to submit data. Please try again later.');
+      });
+    });
+  </script>
+</body>
+</html>
