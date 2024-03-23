@@ -141,13 +141,23 @@
       document.getElementById('submitButton').setAttribute('disabled', 'disabled');
 
       // Collect form data
-      const price = document.getElementById('price').value;
-      const tree_quantity = document.getElementById('tree_quantity').value;
-      const sale_type = document.getElementById('sale_type').value;
+      const aa_price = document.getElementById('aa_price').value;
+       const a_price = document.getElementById('a_price').value;
+       const b_price = document.getElementById('b_price').value;
+       const c_price = document.getElementById('c_price').value;
+       const aa_q = document.getElementById('aa_q').value;
+       const a_q = document.getElementById('a_q').value;
+       const b_q = document.getElementById('b_q').value;
+       const c_q = document.getElementById('c_q').value;
+       const aa_final = Number(aa_price) * Number(aa_q);
+       const a_final = Number(a_price) * Number(a_q);
+       const b_final = Number(b_price) * Number(b_q);
+       const c_final = Number(c_price) * Number(c_q);
+      const sumprice = aa_final + a_final + b_final + c_final;
       const date_sale = document.getElementById('date_sale').value;
 
       // Construct URL with query parameters
-      const url = `https://script.google.com/macros/s/AKfycbw2ndyjMtmxX0SjmxT6v9dQFyAS5YyAWoYhnlAC73fWSjlBCplWeQdbwS7BRTdlh7Fj6Q/exec?userId=${userId}&price=${price}&tree_quantity=${tree_quantity}&sale_type=${sale_type}&date_sale=${date_sale}`;
+      const url = `https://script.google.com/macros/s/AKfycbzG4nBVWiHAJ91Oi3Y9jWAa-acsTV8GXge5gpWM6A9JFcuyYhuFl2weSnxmJlXHNFaRww/exec?userId=${userId}&price=${price}&tree_quantity=${tree_quantity}&sale_type=${sale_type}&date_sale=${date_sale}`;
 
       // Send data to Google Apps Script API using GET method
       fetch(url)
