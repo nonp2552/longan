@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Data Submission Form</title>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+ 
 </head>
 <body>
   <table align="center">
@@ -16,33 +15,23 @@
         <h3>บันทึกข้อมูลการขาย</h3>
         <h3>แบบขายเหมายกสวน</h3>
       
-        <form id="dataForm">
-          <label for="sale_type">วิธีการขายเหมา : </label> 
-          <select id="sale_type" required>
-              <option value="" disabled selected >เลือกวิธีการขาย</option>
-              <option value="เหมาสวนตกเขียว">เหมาสวนตกเขียว</option>
-              <option value="เหมาสวนลูกโต">เหมาสวนลูกโต</option>
-          </select> <br><br>
-          <label for="price">ราคาเหมา : </label> <input type="text" id="price" name="price" required><br><br>
-          <label for="tree_quantity">จำนวนต้น : </label> <input type="text" id="tree_quantity" name="tree_quantity"><br><br>
-          <label for="date_sale">วันที่ได้รับเงินทั้งหมด : </label> 
-          <input type="text" id="date_sale" name="date_sale" required><br><br>
-          <button type="submit"> บันทึกข้อมูล </button>
-        </form>
+      <form id="dataForm">
+        <label for="data1">วิธีการขายเหมา : </label> 
+        <select id="sale_type" required>
+            <option value="" disabled selected >เลือกจังหวัดวิธีการขาย</option>
+            <option value="เหมาสวนตกเขียว">เหมาสวนตกเขียว</option>
+            <option value="เหมาสวนลูกโต">เหมาสวนลูกโต</option>
+        </select> <br><br>
+        <label for="data2">ราคาเหมา : </label> <input type="text" id="price" name="price" required><br><br>
+        <label for="data3">จำนวนต้น : </label> <input type="text" id="tree_quantity" name="tree_quantity"><br><br>
+         <label for="data4">วันที่ได้รับเงินทั้งหมด : </label> <input type="date" id="date_sale" name="date_sale" required><br><br>
+        <button type="submit"> บันทึกข้อมูล </button>
+      </form>
       </td>
     </tr>
   </table>
   
-  <script>
-    $( function() {
-      $( "#date_sale" ).datepicker({
-        dateFormat: 'dd/mm/yy',
-        isBuddhist: true
-      });
-    } );
-  </script>
-
-  <script>
+<script>
     window.onload = function() {
       initializeLiff();
     };
@@ -85,7 +74,6 @@
     }
 
   </script>
-
   <!-- Script to handle form submission -->
   <script>
     document.getElementById('dataForm').addEventListener('submit', function(event) {
@@ -95,6 +83,7 @@
       const data1 = document.getElementById('data1').value;
       const data2 = document.getElementById('data2').value;
       const data3 = document.getElementById('data3').value;
+      const data4 = document.getElementById('data4').value;
 
       // Construct URL with query parameters
       const url = `https://script.google.com/macros/s/AKfycbyFDnc2Y2llP4P8EXvJkUgV7sFV_KBCOFn0lO-mXpdNmREdFAVe6bZt-o8W9LcyISnBow/exec?data1=${userId}&data2=${data2}&data3=${data3}`;
