@@ -45,7 +45,7 @@
           <p><strong>UserID:</strong> ${profile.userId}</p>
           <p><strong>DisplayName:</strong> ${profile.displayName}</p>
           <p><strong>StatusMessage:</strong> ${profile.statusMessage}</p>
-          <img src="${profile.pictureUrl}" alt="Profile Picture">
+          <img src="${profile.pictureUrl}" style="width:10%";>
         `;
         // Call a function to save user profile to Google Sheets
         saveUserProfileToGoogleSheet(profile);
@@ -87,4 +87,3 @@
   </script>
 </body>
 </html>
-
