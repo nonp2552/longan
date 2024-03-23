@@ -20,7 +20,7 @@
       <div class="col-md-6">
         <div id="userProfile" class="text-center mb-4"></div>
         <h5 class="text-center">บันทึกข้อมูลการขาย</h5>
-        <h5 class="text-center">แบบขายเหมายกสวน</h5>
+        <h5 class="text-center">ขายเหมายกสวน</h5>
       
         <form id="dataForm">
           <div class="form-group">
@@ -33,17 +33,17 @@
           </div>
           <div class="form-group">
             <label for="price">ราคาเหมา : </label>
-            <input type="text" id="price" name="price" class="form-control" required>
+            <input type="number" id="price" name="price" class="form-control" required>
           </div>
           <div class="form-group">
             <label for="tree_quantity">จำนวนต้น : </label>
-            <input type="text" id="tree_quantity" name="tree_quantity" class="form-control">
+            <input type="number" id="tree_quantity" name="tree_quantity" class="form-control">
           </div>
           <div class="form-group">
             <label for="date_sale">วันที่ได้รับเงินทั้งหมด : </label>
             <input type="date" id="date_sale" name="date_sale" class="form-control" required>
           </div>
-          <button type="submit" class="btn btn-primary btn-block">บันทึกข้อมูล</button>
+          <button type="submit" id="submitButton" class="btn btn-primary btn-block">บันทึกข้อมูล</button>
         </form>
       </div>
     </div>
@@ -86,12 +86,13 @@
         console.error('Error getting user profile', error);
       }
     }
-  </script>
-  
-  <!-- Script to handle form submission -->
-  <script>
+
+    // Disable button after submission
     document.getElementById('dataForm').addEventListener('submit', function(event) {
       event.preventDefault(); // Prevent form submission from reloading the page
+
+      // Disable submit button
+      document.getElementById('submitButton').setAttribute('disabled', 'disabled');
 
       // Collect form data
       const price = document.getElementById('price').value;
@@ -112,10 +113,14 @@
         } else {
           alert('ระบบบันทึกมีปัญหา ไว้ลองอีกทีนะครับ');
         }
+        // Re-enable submit button after response
+        document.getElementById('submitButton').removeAttribute('disabled');
       })
       .catch(error => {
         console.error('Error submitting data:', error);
         alert('ระบบผิดพลาด อยู่ระหว่างการแก้ไขครับผม');
+        // Re-enable submit button after error
+        document.getElementById('submitButton').removeAttribute('disabled');
       });
     });
   </script>
