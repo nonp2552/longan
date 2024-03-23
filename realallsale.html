@@ -16,16 +16,16 @@
         <h3>แบบขายเหมายกสวน</h3>
       
       <form id="dataForm">
-        <label for="data1">วิธีการขายเหมา : </label> 
+        <label>วิธีการขายเหมา : </label> 
         <select id="sale_type" required>
             <option value="" disabled selected >เลือกจังหวัดวิธีการขาย</option>
             <option value="เหมาสวนตกเขียว">เหมาสวนตกเขียว</option>
             <option value="เหมาสวนลูกโต">เหมาสวนลูกโต</option>
         </select> <br><br>
-        <label for="data2">ราคาเหมา : </label> <input type="text" id="price" name="price" required><br><br>
-        <label for="data3">จำนวนต้น : </label> <input type="text" id="tree_quantity" name="tree_quantity"><br><br>
-         <label for="data4">วันที่ได้รับเงินทั้งหมด : </label> <input type="date" id="date_sale" name="date_sale" required><br><br>
-        <button type="submit"> บันทึกข้อมูล </button>
+        <label>ราคาเหมา : </label> <input type="text" id="price" name="price" required><br><br>
+        <label>จำนวนต้น : </label> <input type="text" id="tree_quantity" name="tree_quantity"><br><br>
+         <label>วันที่ได้รับเงินทั้งหมด : </label> <input type="date" id="date_sale" name="date_sale" required><br><br>
+        <button> บันทึกข้อมูล </button>
       </form>
       </td>
     </tr>
@@ -80,13 +80,13 @@
       event.preventDefault(); // Prevent form submission from reloading the page
 
       // Collect form data
-      const data1 = document.getElementById('data1').value;
-      const data2 = document.getElementById('data2').value;
-      const data3 = document.getElementById('data3').value;
-      const data4 = document.getElementById('data4').value;
+      const price = document.getElementById('price').value;
+      const tree_quantity = document.getElementById('tree_quantity').value;
+      const sale_type = document.getElementById('sale_type').value;
+      const date_sale = document.getElementById('date_sale').value;
 
       // Construct URL with query parameters
-      const url = `https://script.google.com/macros/s/AKfycbyFDnc2Y2llP4P8EXvJkUgV7sFV_KBCOFn0lO-mXpdNmREdFAVe6bZt-o8W9LcyISnBow/exec?data1=${userId}&data2=${data2}&data3=${data3}`;
+      const url = `https://script.google.com/macros/s/AKfycbwuBxUmhaDLO-_gbzVfiN_Lpf6I37c3ndPlLdEOx9unYOa1DV_3Dq5LFdNG21-6EbCCKQ/exec?userId=${userId}&price=${price}&tree_quantity=${tree_quantity}&sale_type=${sale_type}&date_sale=${date_sale}`;
 
       // Send data to Google Apps Script API using GET method
       fetch(url)
