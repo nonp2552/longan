@@ -36,6 +36,9 @@
       }
     }
 
+    var userId = '';
+    var displayName = '';
+    var pictureURL = '';
     async function getUserProfile() {
       try {
         const profile = await liff.getProfile();
@@ -46,8 +49,13 @@
           <p><strong>คุณ : </strong> ${profile.displayName}</p>
           <img src="${profile.pictureUrl}" style="width:20%;">
         `;
+
+         userId = profile.userId;
+         displayName = profile.displayName;
+         pictureURL = profile.pictureUrl;
         // Call a function to save user profile to Google Sheets
-        saveUserProfileToGoogleSheet(profile);
+       // saveUserProfileToGoogleSheet(profile);
+        
       } catch (error) {
         console.error('Error getting user profile', error);
       }
@@ -65,7 +73,7 @@
       const data3 = document.getElementById('data3').value;
 
       // Construct URL with query parameters
-      const url = `https://script.google.com/macros/s/AKfycbyFDnc2Y2llP4P8EXvJkUgV7sFV_KBCOFn0lO-mXpdNmREdFAVe6bZt-o8W9LcyISnBow/exec?data1=${profile.userId}&data2=${data2}&data3=${data3}`;
+      const url = `https://script.google.com/macros/s/AKfycbyFDnc2Y2llP4P8EXvJkUgV7sFV_KBCOFn0lO-mXpdNmREdFAVe6bZt-o8W9LcyISnBow/exec?data1=${userId}&data2=${data2}&data3=${data3}`;
 
       // Send data to Google Apps Script API using GET method
       fetch(url)
