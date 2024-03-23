@@ -4,32 +4,54 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Data Submission Form</title>
+   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <style>
+    /* เพิ่มสไตล์เพื่อปรับแต่งตามความเหมาะสม */
+    body {
+      background-color: #f8f9fa; /* สีพื้นหลังโทนเย็น */
+      padding-top: 20px;
+    }
+    #userProfile img {
+      max-width: 100%;
+    }
+  </style>
  
 </head>
 <body>
-  <table align="center">
-    <tr>
-      <td>
+   <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
         <div id="userProfile"></div>
-        <h3>บันทึกข้อมูลการขาย</h3>
-        <h3>แบบขายเหมายกสวน</h3>
+        <h3 class="text-center">บันทึกข้อมูลการขาย</h3>
+        <h3 class="text-center">แบบขายเหมายกสวน</h3>
       
-      <form id="dataForm">
-        <label>วิธีการขายเหมา : </label> 
-        <select id="sale_type" required>
-            <option value="" disabled selected >เลือกจังหวัดวิธีการขาย</option>
-            <option value="เหมาสวนตกเขียว">เหมาสวนตกเขียว</option>
-            <option value="เหมาสวนลูกโต">เหมาสวนลูกโต</option>
-        </select> <br><br>
-        <label>ราคาเหมา : </label> <input type="text" id="price" name="price" required><br><br>
-        <label>จำนวนต้น : </label> <input type="text" id="tree_quantity" name="tree_quantity"><br><br>
-         <label>วันที่ได้รับเงินทั้งหมด : </label> <input type="date" id="date_sale" name="date_sale" required><br><br>
-        <button> บันทึกข้อมูล </button>
-      </form>
-      </td>
-    </tr>
-  </table>
+        <form id="dataForm">
+          <div class="form-group">
+            <label for="sale_type">วิธีการขายเหมา : </label> 
+            <select id="sale_type" class="form-control" required>
+                <option value="" disabled selected >เลือกวิธีการขาย</option>
+                <option value="เหมาสวนตกเขียว">เหมาสวนตกเขียว</option>
+                <option value="เหมาสวนลูกโต">เหมาสวนลูกโต</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="price">ราคาเหมา : </label>
+            <input type="text" id="price" name="price" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="tree_quantity">จำนวนต้น : </label>
+            <input type="text" id="tree_quantity" name="tree_quantity" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="date_sale">วันที่ได้รับเงินทั้งหมด : </label>
+            <input type="date" id="date_sale" name="date_sale" class="form-control" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">บันทึกข้อมูล</button>
+        </form>
+      </div>
+    </div>
+  </div>
   
 <script>
     window.onload = function() {
@@ -105,5 +127,6 @@
       });
     });
   </script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
