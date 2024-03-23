@@ -25,7 +25,7 @@
         <form id="dataForm">
           <div class="form-group">
             <label for="sale_type">วิธีการขายเหมา : </label> 
-            <select id="sale_type" class="form-control" required>
+            <select id="sale_type" class="form-control" required oninvalid="this.setCustomValidity('เลือกตรงนี้ก่อนนะครับ')" oninput="setCustomValidity('')">
                 <option value="" disabled selected >เลือกวิธีการขาย</option>
                 <option value="เหมาสวนตกเขียว">เหมาสวนตกเขียว</option>
                 <option value="เหมาสวนลูกโต">เหมาสวนลูกโต</option>
@@ -33,7 +33,7 @@
           </div>
           <div class="form-group">
             <label for="price">ราคาเหมา : </label>
-            <input type="number" id="price" name="price" class="form-control" required>
+            <input type="number" id="price" name="price" class="form-control" required oninvalid="this.setCustomValidity('ป้อนตัวเลขตรงนี้ก่อนนะครับ')" oninput="setCustomValidity('')">
           </div>
           <div class="form-group">
             <label for="tree_quantity">จำนวนต้น : </label>
@@ -41,7 +41,7 @@
           </div>
           <div class="form-group">
             <label for="date_sale">วันที่ได้รับเงินทั้งหมด : </label>
-            <input type="date" id="date_sale" name="date_sale" class="form-control" required>
+            <input type="date" id="date_sale" name="date_sale" class="form-control" required oninvalid="this.setCustomValidity('ป้อนตัวเลขตรงนี้ก่อนนะครับ ถ้าไม่รู้ให้ใส่ 0 นะครับ')" oninput="setCustomValidity('')">
           </div>
           <button type="submit" id="submitButton" class="btn btn-primary btn-block">บันทึกข้อมูล</button>
         </form>
