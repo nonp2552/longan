@@ -75,8 +75,8 @@
         const profile = await liff.getProfile();
         const userProfileElement = document.getElementById('userProfile');
         userProfileElement.innerHTML = `
-          <h6 style="visibility: hidden;">UserID: ${profile.userId}</h6>
-          <h6>ผู้บันทึก :  ${profile.displayName}</h6>
+          <h5 style="visibility: hidden;">UserID: ${profile.userId}</h5>
+          <h5>ผู้บันทึก :  ${profile.displayName}</h5>
           <img src="${profile.pictureUrl}" class="mx-auto d-block" style="max-width: 20%;">`;
 
          userId = profile.userId;
