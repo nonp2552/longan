@@ -93,73 +93,77 @@
       fetch(url)
         .then(response => response.json())
         .then(data => {
-          jsonData = data;
+    jsonData = data;
 
-          // สร้างตารางแสดงรายงานยอดขายรวมในแต่ละปีและประเภทการขาย
-          var dataTable = new google.visualization.DataTable();
-          dataTable.addColumn('string', 'ปี');
-          dataTable.addColumn('number', 'เหมาสวน');
-          dataTable.addColumn('number', 'รูดร่วง');
+    // สร้างตารางแสดงรายงานยอดขายรวมในแต่ละปีและประเภทการขาย
+    var dataTable = new google.visualization.DataTable();
+    dataTable.addColumn('string', 'ปี');
+    dataTable.addColumn('number', 'เหมาสวน');
+    dataTable.addColumn('number', 'รูดร่วง');
+    dataTable.addColumn('number', 'รวม'); // เพิ่มคอลัมน์ "รวม"
 
-          var yearSales = {};
-          var typeSales = {};
+    var yearSales = {};
+    var typeSales = {};
 
-          for (var i = 0; i < jsonData.length; i++) {
-            var date = new Date(jsonData[i].date_sale);
-            var year = date.getFullYear() + 543; // แปลงเป็นปี พ.ศ.
+    for (var i = 0; i < jsonData.length; i++) {
+        var date = new Date(jsonData[i].date_sale);
+        var year = date.getFullYear() + 543; // แปลงเป็นปี พ.ศ.
 
-            if (!yearSales[year]) {
-              yearSales[year] = {
+        if (!yearSales[year]) {
+            yearSales[year] = {
                 'เหมาสวน': 0,
                 'รูดร่วง': 0
-              };
-            }
+            };
+        }
 
-            yearSales[year][jsonData[i].sale_type] += jsonData[i].price;
+        yearSales[year][jsonData[i].sale_type] += jsonData[i].price;
 
-            if (!typeSales[jsonData[i].sale_type]) {
-              typeSales[jsonData[i].sale_type] = 0;
-            }
+        if (!typeSales[jsonData[i].sale_type]) {
+            typeSales[jsonData[i].sale_type] = 0;
+        }
 
-            typeSales[jsonData[i].sale_type] += jsonData[i].price;
-          }
+        typeSales[jsonData[i].sale_type] += jsonData[i].price;
+    }
 
-          for (var year in yearSales) {
-            var row = [year.toString()];
-            for (var type in typeSales) {
-              row.push(yearSales[year][type]);
-            }
-            dataTable.addRow(row);
-          }
+    for (var year in yearSales) {
+        var total = yearSales[year]['เหมาสวน'] + yearSales[year]['รูดร่วง']; // คำนวณค่ารวม
+        var row = [year.toString()];
+        for (var type in typeSales) {
+            row.push(yearSales[year][type]);
+        }
+        row.push(total); // เพิ่มค่ารวมไปยังแถว
+        dataTable.addRow(row);
+    }
 
-          var table = new google.visualization.Table(document.getElementById('table_div'));
-          table.draw(dataTable, { showRowNumber: true, width: '100%', height: '100%', backgroundColor: '#ffffff', page: 'enable', pageSize: '10', pagingButtons: 'auto' });
+    var table = new google.visualization.Table(document.getElementById('table_div'));
+    table.draw(dataTable, { showRowNumber: true, width: '100%', height: '100%', backgroundColor: '#ffffff', page: 'enable', pageSize: '10', pagingButtons: 'auto' });
 
-          // สร้างกราฟเส้นแสดงรายงานยอดขายรวมในแต่ละปีตามประเภทการขาย
-          var chartData = new google.visualization.DataTable();
-          chartData.addColumn('string', 'ปี');
-          for (var type in typeSales) {
-            chartData.addColumn('number', type);
-          }
+    // สร้างกราฟเส้นแสดงรายงานยอดขายรวมในแต่ละปีตามประเภทการขาย
+    var chartData = new google.visualization.DataTable();
+    chartData.addColumn('string', 'ปี');
+    for (var type in typeSales) {
+        chartData.addColumn('number', type);
+    }
 
-          for (var year in yearSales) {
-            var row = [year.toString()];
-            for (var type in typeSales) {
-              row.push(yearSales[year][type]);
-            }
-            chartData.addRow(row);
-          }
+    for (var year in yearSales) {
+        var row = [year.toString()];
+        for (var type in typeSales) {
+            row.push(yearSales[year][type]);
+        }
+        chartData.addRow(row);
+    }
 
-          var options = {
-            title: 'ยอดขายรวมในแต่ละปีตามประเภทการขาย',
-            curveType: 'function',
-            legend: { position: 'bottom' },
-            backgroundColor: '#ffffff'
-          };
+    var options = {
+        title: 'ยอดขายรวมในแต่ละปีตามประเภทการขาย',
+        curveType: 'function',
+        legend: { position: 'bottom' },
+        backgroundColor: '#ffffff'
+    };
 
-          var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-          chart.draw(chartData, options);
-        });
+    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    chart.draw(chartData, options);
+});
+
     }
   </script>
 
