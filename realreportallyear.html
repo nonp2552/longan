@@ -35,10 +35,7 @@
         if (liff.isLoggedIn()) {
           const profile = await liff.getProfile();
           const userProfileElement = document.getElementById('userProfile');
-          userProfileElement.innerHTML = `
-            <h5>ผู้ใช้: ${profile.displayName}</h5>
-            <img src="${profile.pictureUrl}" class="mx-auto d-block" style="max-width: 20%;">`;
-
+    
           // ดึงข้อมูลของผู้ใช้เพื่อสร้าง URL ที่ต้องการ
           const userId = profile.userId;
           const url = `https://script.google.com/macros/s/AKfycbz6uY-T9pY4P-hNuTZnZSqgp-zjKwmRvPoN_npGg9jHkxRP9nYD2W3yhea3aDU0W6EoJA/exec?lineId=${userId}`;
