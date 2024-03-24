@@ -27,37 +27,14 @@
   </div>
 
   <script>
-window.onload = function() {
-      initializeLiff();
-    };
+    google.charts.load('current', {'packages':['corechart', 'table']});
+    google.charts.setOnLoadCallback(drawChart);
 
-    async function initializeLiff() {
-  try {
-    await liff.init({ liffId: '2004099826-LM3r1dKl' });
-    if (liff.isLoggedIn()) {
-     // drawChart();
-    } else {
-      liff.login();
-    }
-  } catch (error) {
-    console.error('LIFF initialization failed', error);
-  }
-}
-
-    
- function drawChart() {
-     //try {
-       const profile = await liff.getProfile();
-    const userProfileElement = document.getElementById('userProfile');
-    var userId = profile.userId;
-    var displayName = profile.displayName;
-    var pictureURL = profile.pictureUrl;
-       
-    
-      // เรียกใช้ API ด้วย URL ที่มี lineId
+    function drawChart() {
+      // เรียกใช้ API ด้วย URL
       var url = "https://script.google.com/macros/s/AKfycbz6uY-T9pY4P-hNuTZnZSqgp-zjKwmRvPoN_npGg9jHkxRP9nYD2W3yhea3aDU0W6EoJA/exec?lineId=Uc0b6fcddc982dd4ef8d0e4dbb85b5ef5";
       var jsonData = null;
-      
+
       // ดึงข้อมูล JSON จาก API
       fetch(url)
         .then(response => response.json())
@@ -129,9 +106,6 @@ window.onload = function() {
           var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
           chart.draw(chartData, options);
         });
-     //    } catch (error) {
-       // console.error('Error getting user profile', error);
-      //}
     }
   </script>
 
