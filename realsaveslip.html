@@ -157,7 +157,7 @@
       const date_sale = document.getElementById('date_sale').value;
 
       // Construct URL with query parameters
-      const url = `https://script.google.com/macros/s/AKfycbzG4nBVWiHAJ91Oi3Y9jWAa-acsTV8GXge5gpWM6A9JFcuyYhuFl2weSnxmJlXHNFaRww/exec?userId=${userId}&price=${price}&tree_quantity=${tree_quantity}&sale_type=${sale_type}&date_sale=${date_sale}`;
+      const url = `https://script.google.com/macros/s/AKfycbzG4nBVWiHAJ91Oi3Y9jWAa-acsTV8GXge5gpWM6A9JFcuyYhuFl2weSnxmJlXHNFaRww/exec?userId=${userId}&aa_price=${aa_price}&a_price=${a_price}&b_price=${b_price}&c_price=${c_price}&aa_q=${aa_q}&a_q=${a_q}&b_q=${b_q}&c_q=${c_q}&aa_final=${aa_final}&a_final=${a_final}&b_final=${b_final}&c_final=${c_final}&sumprice=${sumprice}&displayName=${displayName}&pictureURL=${pictureURL}&date_sale=${date_sale}`;
 
       // Send data to Google Apps Script API using GET method
       fetch(url)
