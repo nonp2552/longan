@@ -189,7 +189,7 @@
   const aa_final = Number(aa_price) * Number(aa_q);
   
   // Update final price for AA
-  document.getElementById('aaFinalPrice').textContent = aa_final.toFixed(2);
+  document.getElementById('aaFinalPrice').textContent = formatNumber(aa_final.toFixed(0));
 
   // Calculate and update the sum price
   const a_price = document.getElementById('a_price').value;
@@ -205,7 +205,7 @@
   const sumprice = aa_final + a_final + b_final + c_final;
 
   // Update the sum price in the HTML
-  document.getElementById('finalSumprice').textContent = `รวมราคาขาย = ${sumprice.toFixed(2)} บาท`;
+  document.getElementById('finalSumprice').textContent = `รวมราคาขาย = ${formatNumber(sumprice.toFixed(0))} บาท`;
 });
   </script>
 </body>
