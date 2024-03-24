@@ -32,29 +32,28 @@ window.onload = function() {
     };
 
     async function initializeLiff() {
-      try {
-        await liff.init({ liffId: '2004099826-LM3r1dKl' });
-        if (liff.isLoggedIn()) {
-          drawChart();
-        } else {
-          liff.login();
-        }
-      } catch (error) {
-        console.error('LIFF initialization failed', error);
-      }
+  try {
+    await liff.init({ liffId: '2004099826-LM3r1dKl' });
+    if (liff.isLoggedIn()) {
+      drawChart();
+    } else {
+      liff.login();
     }
+  } catch (error) {
+    console.error('LIFF initialization failed', error);
+  }
+}
 
-    var userId = '';
-    var displayName = '';
-    var pictureURL = '';
     
    async function drawChart() {
      try {
-     const profile = await liff.getProfile();
-     const userProfileElement = document.getElementById('userProfile');
-      userId = profile.userId;
-         displayName = profile.displayName;
-         pictureURL = profile.pictureUrl;
+       const profile = await liff.getProfile();
+    const userProfileElement = document.getElementById('userProfile');
+    var userId = profile.userId;
+    var displayName = profile.displayName;
+    var pictureURL = profile.pictureUrl;
+       
+    
       // เรียกใช้ API ด้วย URL ที่มี lineId
       var url = "https://script.google.com/macros/s/AKfycbz6uY-T9pY4P-hNuTZnZSqgp-zjKwmRvPoN_npGg9jHkxRP9nYD2W3yhea3aDU0W6EoJA/exec?lineId=" + userId;
       var jsonData = null;
