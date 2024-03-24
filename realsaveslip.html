@@ -187,7 +187,6 @@
   const aa_price = document.getElementById('aa_price').value;
   const aa_q = document.getElementById('aa_q').value;
   const aa_final = Number(aa_price) * Number(aa_q);
-  
   // Update final price for AA
   document.getElementById('aaFinalPrice').textContent = formatNumber(aa_final.toFixed(0));
 
@@ -200,8 +199,11 @@
   const c_q = document.getElementById('c_q').value;
   
   const a_final = Number(a_price) * Number(a_q);
+    document.getElementById('aFinalPrice').textContent = formatNumber(a_final.toFixed(0));
   const b_final = Number(b_price) * Number(b_q);
+    document.getElementById('bFinalPrice').textContent = formatNumber(b_final.toFixed(0));
   const c_final = Number(c_price) * Number(c_q);
+    document.getElementById('cFinalPrice').textContent = formatNumber(c_final.toFixed(0));
   const sumprice = aa_final + a_final + b_final + c_final;
 
   // Update the sum price in the HTML
