@@ -30,17 +30,9 @@
     google.charts.load('current', {'packages':['corechart', 'table']});
     google.charts.setOnLoadCallback(drawChart);
 
-    async function drawChart() {
-      await liff.init({ liffId: '2004099826-LM3r1dKl' });
-        if (liff.isLoggedIn()) {
-          const profile = await liff.getProfile();
-          const userProfileElement = document.getElementById('userProfile');
-    
-          // ดึงข้อมูลของผู้ใช้เพื่อสร้าง URL ที่ต้องการ
-          const userId = profile.userId;
-          const url = `https://script.google.com/macros/s/AKfycbz6uY-T9pY4P-hNuTZnZSqgp-zjKwmRvPoN_npGg9jHkxRP9nYD2W3yhea3aDU0W6EoJA/exec?lineId=${userId}`;
-          }
-      
+    function drawChart() {
+      // เรียกใช้ API ด้วย URL
+      var url = "https://script.google.com/macros/s/AKfycbz6uY-T9pY4P-hNuTZnZSqgp-zjKwmRvPoN_npGg9jHkxRP9nYD2W3yhea3aDU0W6EoJA/exec?lineId=Uc0b6fcddc982dd4ef8d0e4dbb85b5ef5";
       var jsonData = null;
 
       // ดึงข้อมูล JSON จาก API
