@@ -21,6 +21,7 @@
         <div id="userProfile" class="text-center mb-4"></div>
         <h5 class="text-center">บันทึกข้อมูลการขาย</h5>
         <h5 class="text-center">ขายแบบรูดร่วง</h5>
+        <h5 class="text-center" id="finalSumprice">รวมราคาขาย = บาท</h5>
       
         <form id="dataForm">
           
@@ -44,7 +45,7 @@
             <input type="number" id="aa_q" name="aa_q" class="form-control" required oninvalid="this.setCustomValidity('ต้องใส่ตัวเลขทุกช่องนะครับ หากไม่มีให้ใส่ 0 ครับ')" oninput="setCustomValidity('')" value="0">
           </div>
         </td></td>
-        <td>1,0000</td>
+        <td id="aaFinalPrice">0</td>
       </tr>
       <tr style="background-color: #ffffff;">
         <td>A</td>
@@ -56,7 +57,7 @@
             <input type="number" id="a_q" name="a_q" class="form-control" required oninvalid="this.setCustomValidity('ต้องใส่ตัวเลขทุกช่องนะครับ หากไม่มีให้ใส่ 0 ครับ')" oninput="setCustomValidity('')" value="0">
           </div>
         </td></td>
-        <td>200,000</td>
+        <td id="aFinalPrice">0</td>
       </tr>
       <tr style="background-color: #D6EEEE;">
         <td>B</td>
@@ -68,7 +69,7 @@
             <input type="number" id="b_q" name="b_q" class="form-control" required oninvalid="this.setCustomValidity('ต้องใส่ตัวเลขทุกช่องนะครับ หากไม่มีให้ใส่ 0 ครับ')" oninput="setCustomValidity('')" value="0">
           </div>
         </td></td>
-        <td>30,000</td>
+        <td id="bFinalPrice">0</td>
       </tr>
       <tr style="background-color: #ffffff;">
         <td>C</td>
@@ -80,7 +81,7 @@
             <input type="number" id="c_q" name="c_q" class="form-control" required oninvalid="this.setCustomValidity('ต้องใส่ตัวเลขทุกช่องนะครับ หากไม่มีให้ใส่ 0 ครับ')" oninput="setCustomValidity('')" value="0">
           </div>
         </td></td>
-        <td>2,000</td>
+        <td id="cFinalPrice">0</td>
       </tr>
     </tbody>
   </table>
@@ -180,6 +181,32 @@
         document.getElementById('submitButton').removeAttribute('disabled');
       });
     });
+
+    document.getElementById('dataForm').addEventListener('input', function(event) {
+  // Collect form data
+  const aa_price = document.getElementById('aa_price').value;
+  const aa_q = document.getElementById('aa_q').value;
+  const aa_final = Number(aa_price) * Number(aa_q);
+  
+  // Update final price for AA
+  document.getElementById('aaFinalPrice').textContent = aa_final.toFixed(2);
+
+  // Calculate and update the sum price
+  const a_price = document.getElementById('a_price').value;
+  const a_q = document.getElementById('a_q').value;
+  const b_price = document.getElementById('b_price').value;
+  const b_q = document.getElementById('b_q').value;
+  const c_price = document.getElementById('c_price').value;
+  const c_q = document.getElementById('c_q').value;
+  
+  const a_final = Number(a_price) * Number(a_q);
+  const b_final = Number(b_price) * Number(b_q);
+  const c_final = Number(c_price) * Number(c_q);
+  const sumprice = aa_final + a_final + b_final + c_final;
+
+  // Update the sum price in the HTML
+  document.getElementById('finalSumprice').textContent = `รวมราคาขาย = ${sumprice.toFixed(2)} บาท`;
+});
   </script>
 </body>
 </html>
