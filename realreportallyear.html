@@ -35,7 +35,7 @@
       try {
         await liff.init({ liffId: '2004099826-LM3r1dKl' });
         if (liff.isLoggedIn()) {
-          //getUserProfile();
+          drawChart();
         } else {
           liff.login();
         }
@@ -47,9 +47,20 @@
     google.charts.load('current', {'packages':['corechart', 'table']});
     google.charts.setOnLoadCallback(drawChart);
 
+    var userId = '';
+    var displayName = '';
+    var pictureURL = '';
+      
     function drawChart() {
+      const profile = await liff.getProfile();
+      const userProfileElement = document.getElementById('userProfile');
+      
+         userId = profile.userId;
+         displayName = profile.displayName;
+         pictureURL = profile.pictureUrl;
+      
       // เรียกใช้ API ด้วย URL
-      var url = "https://script.google.com/macros/s/AKfycbz6uY-T9pY4P-hNuTZnZSqgp-zjKwmRvPoN_npGg9jHkxRP9nYD2W3yhea3aDU0W6EoJA/exec?lineId=Uc0b6fcddc982dd4ef8d0e4dbb85b5ef5";
+      var url = "https://script.google.com/macros/s/AKfycbz6uY-T9pY4P-hNuTZnZSqgp-zjKwmRvPoN_npGg9jHkxRP9nYD2W3yhea3aDU0W6EoJA/exec?lineId=" + userId;
       var jsonData = null;
 
       // ดึงข้อมูล JSON จาก API
