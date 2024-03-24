@@ -27,6 +27,24 @@
   </div>
 
   <script>
+    <script>
+    window.onload = function() {
+      initializeLiff();
+    };
+
+    async function initializeLiff() {
+      try {
+        await liff.init({ liffId: '2004099826-LM3r1dKl' });
+        if (liff.isLoggedIn()) {
+          getUserProfile();
+        } else {
+          liff.login();
+        }
+      } catch (error) {
+        console.error('LIFF initialization failed', error);
+      }
+    }
+    
     google.charts.load('current', {'packages':['corechart', 'table']});
     google.charts.setOnLoadCallback(drawChart);
 
