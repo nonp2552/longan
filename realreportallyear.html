@@ -49,6 +49,7 @@ window.onload = function() {
     var pictureURL = '';
     
    async function drawChart() {
+     try {
      const profile = await liff.getProfile();
      const userProfileElement = document.getElementById('userProfile');
       userId = profile.userId;
@@ -129,6 +130,9 @@ window.onload = function() {
           var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
           chart.draw(chartData, options);
         });
+         } catch (error) {
+        console.error('Error getting user profile', error);
+      }
     }
   </script>
 
