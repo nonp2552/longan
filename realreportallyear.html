@@ -26,7 +26,6 @@
     </div>
   </div>
 
-  <script>
     <script>
     window.onload = function() {
       initializeLiff();
@@ -36,7 +35,7 @@
       try {
         await liff.init({ liffId: '2004099826-LM3r1dKl' });
         if (liff.isLoggedIn()) {
-          getUserProfile();
+          //getUserProfile();
         } else {
           liff.login();
         }
