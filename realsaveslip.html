@@ -207,6 +207,10 @@
   // Update the sum price in the HTML
   document.getElementById('finalSumprice').textContent = `รวมราคาขาย = ${formatNumber(sumprice.toFixed(0))} บาท`;
 });
+
+        function formatNumber(number) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
   </script>
 </body>
 </html>
