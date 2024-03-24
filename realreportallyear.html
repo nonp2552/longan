@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>รายงานยอดขาย</title>
+  <!-- เรียกใช้ Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- เรียกใช้ Google Charts -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body style="background-color: #f8f9fa;">
+
+  <div class="container">
+    <h1 class="mt-4 mb-4 text-center">รายงานยอดขาย</h1>
+
+    <div class="row justify-content-center">
+      <div class="col-md-8" style="background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+        <div id="chart_div"></div>
+      </div>
+    </div>
+
+    <div class="row justify-content-center mt-4">
+      <div class="col-md-8" style="background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+        <div id="table_div"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    google.charts.load('current', {'packages':['corechart', 'table']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    async function drawChart() {
+      await liff.init({ liffId: '2004099826-LM3r1dKl' });
+        if (liff.isLoggedIn()) {
+          const profile = await liff.getProfile();
+          const userProfileElement = document.getElementById('userProfile');
+          userProfileElement.innerHTML = `
+            <h5>ผู้ใช้: ${profile.displayName}</h5>
+            <img src="${profile.pictureUrl}" class="mx-auto d-block" style="max-width: 20%;">`;
+
+          // ดึงข้อมูลของผู้ใช้เพื่อสร้าง URL ที่ต้องการ
+          const userId = profile.userId;
+          const url = `https://script.google.com/macros/s/AKfycbz6uY-T9pY4P-hNuTZnZSqgp-zjKwmRvPoN_npGg9jHkxRP9nYD2W3yhea3aDU0W6EoJA/exec?lineId=${userId}`;
+          }
+      
+      var jsonData = null;
+
+      // ดึงข้อมูล JSON จาก API
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          jsonData = data;
+
+          // สร้างตารางแสดงรายงานยอดขายรวมในแต่ละปีและประเภทการขาย
+          var dataTable = new google.visualization.DataTable();
+          dataTable.addColumn('string', 'ปี');
+          dataTable.addColumn('number', 'เหมาสวน');
+          dataTable.addColumn('number', 'รูดร่วง');
+
+          var yearSales = {};
+          var typeSales = {};
+
+          for (var i = 0; i < jsonData.length; i++) {
+            var date = new Date(jsonData[i].date_sale);
+            var year = date.getFullYear() + 543; // แปลงเป็นปี พ.ศ.
+
+            if (!yearSales[year]) {
+              yearSales[year] = {
+                'เหมาสวน': 0,
+                'รูดร่วง': 0
+              };
+            }
+
+            yearSales[year][jsonData[i].sale_type] += jsonData[i].price;
+
+            if (!typeSales[jsonData[i].sale_type]) {
+              typeSales[jsonData[i].sale_type] = 0;
+            }
+
+            typeSales[jsonData[i].sale_type] += jsonData[i].price;
+          }
+
+          for (var year in yearSales) {
+            var row = [year.toString()];
+            for (var type in typeSales) {
+              row.push(yearSales[year][type]);
+            }
+            dataTable.addRow(row);
+          }
+
+          var table = new google.visualization.Table(document.getElementById('table_div'));
+          table.draw(dataTable, { showRowNumber: true, width: '100%', height: '100%', backgroundColor: '#ffffff', page: 'enable', pageSize: '10', pagingButtons: 'auto' });
+
+          // สร้างกราฟเส้นแสดงรายงานยอดขายรวมในแต่ละปีตามประเภทการขาย
+          var chartData = new google.visualization.DataTable();
+          chartData.addColumn('string', 'ปี');
+          for (var type in typeSales) {
+            chartData.addColumn('number', type);
+          }
+
+          for (var year in yearSales) {
+            var row = [year.toString()];
+            for (var type in typeSales) {
+              row.push(yearSales[year][type]);
+            }
+            chartData.addRow(row);
+          }
+
+          var options = {
+            title: 'ยอดขายรวมในแต่ละปีตามประเภทการขาย',
+            curveType: 'function',
+            legend: { position: 'bottom' },
+            backgroundColor: '#ffffff'
+          };
+
+          var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+          chart.draw(chartData, options);
+        });
+    }
+  </script>
+
+</body>
+</html>
