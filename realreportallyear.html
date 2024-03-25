@@ -90,22 +90,33 @@
       var jsonData = null;
 
       // ดึงข้อมูล JSON จาก API
-    fetch(url)
+   fetch(url)
     .then(response => response.json())
     .then(data => {
+        console.log(data); // เพิ่มบรรทัดนี้เพื่อตรวจสอบข้อมูลที่ได้รับมา
+
         jsonData = data;
 
-        if (jsonData.length === 0) {
-            // หากไม่มีข้อมูลที่ได้รับมาเลย
-            document.getElementById('table_div').innerText = "คุณยังไม่มีข้อมูลการขาย";
-            document.getElementById('chart_div').innerText = "คุณยังไม่มีข้อมูลการขาย";
-            return;
+        // ตรวจสอบว่ามีข้อมูลประเภทใดในข้อมูลที่ได้รับมาก่อน
+        var hasDrop = false;
+        var hasContract = false;
+
+        for (var i = 0; i < jsonData.length; i++) {
+            if (jsonData[i].sale_type === 'รูดร่วง') {
+                hasDrop = true;
+            } else if (jsonData[i].sale_type === 'เหมาสวน') {
+                hasContract = true;
+            }
         }
 
         var dataTable = new google.visualization.DataTable();
         dataTable.addColumn('string', 'ปี');
-        dataTable.addColumn('number', 'เหมาสวน');
-        dataTable.addColumn('number', 'รูดร่วง');
+        if (hasContract) {
+            dataTable.addColumn('number', 'เหมาสวน');
+        }
+        if (hasDrop) {
+            dataTable.addColumn('number', 'รูดร่วง');
+        }
         dataTable.addColumn('number', 'รวม'); 
 
         var yearSales = {};
@@ -132,10 +143,13 @@
         }
 
         for (var year in yearSales) {
-            var total = yearSales[year]['เหมาสวน'] + yearSales[year]['รูดร่วง'];
+            var total = (hasContract ? yearSales[year]['เหมาสวน'] : 0) + (hasDrop ? yearSales[year]['รูดร่วง'] : 0);
             var row = [year.toString()];
-            for (var type in typeSales) {
-                row.push(yearSales[year][type]);
+            if (hasContract) {
+                row.push(yearSales[year]['เหมาสวน']);
+            }
+            if (hasDrop) {
+                row.push(yearSales[year]['รูดร่วง']);
             }
             row.push(total);
             dataTable.addRow(row);
@@ -146,14 +160,20 @@
 
         var chartData = new google.visualization.DataTable();
         chartData.addColumn('string', 'ปี');
-        for (var type in typeSales) {
-            chartData.addColumn('number', type);
+        if (hasContract) {
+            chartData.addColumn('number', 'เหมาสวน');
+        }
+        if (hasDrop) {
+            chartData.addColumn('number', 'รูดร่วง');
         }
 
         for (var year in yearSales) {
             var row = [year.toString()];
-            for (var type in typeSales) {
-                row.push(yearSales[year][type]);
+            if (hasContract) {
+                row.push(yearSales[year]['เหมาสวน']);
+            }
+            if (hasDrop) {
+                row.push(yearSales[year]['รูดร่วง']);
             }
             chartData.addRow(row);
         }
@@ -168,6 +188,7 @@
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
         chart.draw(chartData, options);
     });
+
 
 
     }
