@@ -24,23 +24,23 @@
       
         <form id="dataForm">
           <div class="form-group">
-            <label for="sale_type">วิธีการขายเหมา : </label> 
-            <select id="sale_type" class="form-control" required oninvalid="this.setCustomValidity('เลือกตรงนี้ก่อนนะครับ')" oninput="setCustomValidity('')">
-                <option value="" disabled selected >เลือกวิธีการขาย</option>
-                <option value="เหมาสวนตกเขียว">เหมาสวนตกเขียว</option>
-                <option value="เหมาสวนลูกโต">เหมาสวนลูกโต</option>
-            </select>
+            <label for="rai">จำนวนพื้นที่(ไร่) : </label>
+            <input type="number" id="rai" name="rai" class="form-control" required oninvalid="this.setCustomValidity('ป้อนตัวเลขตรงนี้ก่อนนะครับ')" oninput="setCustomValidity('')">
           </div>
           <div class="form-group">
-            <label for="price">ราคาเหมา : </label>
-            <input type="number" id="price" name="price" class="form-control" required oninvalid="this.setCustomValidity('ป้อนตัวเลขตรงนี้ก่อนนะครับ')" oninput="setCustomValidity('')">
+            <label for="ngan">จำนวนพื้นที่(งาน) : </label>
+            <input type="number" id="ngan" name="ngan" class="form-control" required oninvalid="this.setCustomValidity('ป้อนตัวเลขตรงนี้ก่อนนะครับ')" oninput="setCustomValidity('')">
           </div>
           <div class="form-group">
             <label for="tree_quantity">จำนวนต้น : </label>
             <input type="number" id="tree_quantity" name="tree_quantity" class="form-control" required oninvalid="this.setCustomValidity('ป้อนตัวเลขตรงนี้ก่อนนะครับ ถ้าไม่รู้ให้ใส่ 0 นะครับ')" oninput="setCustomValidity('')">
           </div>
           <div class="form-group">
-            <label for="date_sale">วันที่ได้รับเงินทั้งหมด : </label>
+            <label for="contact">ช่องทางติดต่อ(เบอร์โทรฯ หรือ Line ID) : </label>
+            <input id="contact" name="contact" class="form-control" required oninvalid="this.setCustomValidity('ป้อนช่องทางติดต่อตรงนี้ก่อนนะครับ')" oninput="setCustomValidity('')">
+          </div>
+          <div class="form-group">
+            <label for="date_sale">วันที่ปิดการขาย : </label>
             <input type="date" id="date_sale" name="date_sale" class="form-control" required oninvalid="this.setCustomValidity('เลือกวันที่ก่อนนะครับ')" oninput="setCustomValidity('')">
           </div>
           <button type="submit" id="submitButton" class="btn btn-primary btn-block">บันทึกข้อมูล</button>
@@ -57,7 +57,7 @@
 
     async function initializeLiff() {
       try {
-        await liff.init({ liffId: '2004099826-jdb51qgr' });
+        await liff.init({ liffId: '2004099826-JOZr5yMD' });
         if (liff.isLoggedIn()) {
           getUserProfile();
         } else {
@@ -96,13 +96,14 @@
       document.getElementById('submitButton').setAttribute('disabled', 'disabled');
 
       // Collect form data
-      const price = document.getElementById('price').value;
+      const rai = document.getElementById('rai').value;
       const tree_quantity = document.getElementById('tree_quantity').value;
-      const sale_type = document.getElementById('sale_type').value;
+      const ngan = document.getElementById('ngan').value;
+      const contact = document.getElementById('contact').value;
       const date_sale = document.getElementById('date_sale').value;
 
       // Construct URL with query parameters
-      const url = `https://script.google.com/macros/s/AKfycbw2ndyjMtmxX0SjmxT6v9dQFyAS5YyAWoYhnlAC73fWSjlBCplWeQdbwS7BRTdlh7Fj6Q/exec?userId=${userId}&price=${price}&tree_quantity=${tree_quantity}&sale_type=${sale_type}&date_sale=${date_sale}`;
+      const url = `https://script.google.com/macros/s/AKfycbyBF3hLnyqi3kBdM9-qF5NPs4LnXW91P8OlOZ650TXbOyyV4c_vP9Clt9bk9MtWlCT-/exec?userId=${userId}&arearai=${rai}&tree_quantity=${tree_quantity}&areangan=${ngan}&date_sale=${date_sale}&contactinformation=${contact}&displayName=${displayName}&pictureURL=${pictureURL}`;
 
       // Send data to Google Apps Script API using GET method
       fetch(url)
