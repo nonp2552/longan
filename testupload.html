@@ -7,44 +7,37 @@
 </head>
 <body>
     <h1>Upload Images to Imgur</h1>
-    <input type="file" id="fileInput" accept="image/*" multiple>
+    <input type="file" id="fileInput" accept="image/*">
     <button onclick="uploadToImgur()">Upload</button>
 
     <script>
         async function uploadToImgur() {
             const fileInput = document.getElementById('fileInput');
-            const files = fileInput.files;
+            const file = fileInput.files[0];
 
-            if (!files.length) {
-                alert('Please select at least one file.');
+            if (!file) {
+                alert('Please select a file.');
                 return;
             }
 
-            if (files.length > 4) {
-                alert('You can only upload up to 4 images at a time.');
-                return;
-            }
+            const formData = new FormData();
+            formData.append('image', file);
 
-            for (const file of files) {
-                const formData = new FormData();
-                formData.append('image', file);
+            try {
+                const response = await fetch('https://api.imgur.com/3/image', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'eb7f4c571dfaca8' // Replace with your Imgur Client ID
+                    },
+                    body: formData
+                });
 
-                try {
-                    const response = await fetch('https://api.imgur.com/3/image', {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': '832bbcc7f3b484b' // Replace with your Imgur Client ID
-                        },
-                        body: formData
-                    });
-
-                    const data = await response.json();
-                    console.log('Upload successful:', data);
-                    alert('Image uploaded successfully! Imgur link: ' + data.data.link);
-                } catch (error) {
-                    console.error('Error uploading image:', error);
-                    alert('Error uploading image. Please try again.');
-                }
+                const data = await response.json();
+                console.log('Upload successful:', data);
+                alert('Image uploaded successfully! Imgur link: ' + data.data.link);
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                alert('Error uploading image. Please try again.');
             }
         }
     </script>
